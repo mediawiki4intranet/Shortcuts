@@ -44,7 +44,7 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
         'rd_namespace' => $t->getNamespace(),
         'rd_title' => $t->getDBkey(),
         'page_id=rd_from',
-        'page_title REGEXP \'^[\x00-\x7F]+$\'',
+        'page_title REGEXP \'^[a-zA-Z0-9_-]+$\'',
     ), __METHOD__, array('ORDER BY' => 'LENGTH(rd_title) DESC', 'LIMIT' => 1));
     $row = $res->fetchObject();
     if ($row)
