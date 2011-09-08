@@ -37,25 +37,49 @@ function wfShortcuts()
 
 function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
 {
-    global $wgOut, $wgUser;
+    global $wgOut, $wgContLang, $wgArticlePath, $wgCanonicalNamespaceNames;
     $dbr = wfGetDB(DB_SLAVE);
     $t = $article->getTitle();
+    $shortcut = NULL;
+    $ns = $t->getNamespace();
+    $dbkey = $t->getDBkey();
     // Do not output "shortcut" links to articles which already have "short" title
-    if (preg_match('/[^a-zA-Z0-9_-]/s', $t->getDBkey()) || strlen($t->getDBkey()) > 32)
+    if (preg_match('/[^a-zA-Z0-9_-]/s', $dbkey) ||
+        strlen($dbkey) > 32 || $ns != NS_MAIN)
     {
         $res = $dbr->select(array('redirect', 'page'), '*', array(
-            'rd_namespace' => $t->getNamespace(),
-            'rd_title' => $t->getDBkey(),
+            'rd_namespace' => $ns,
+            'rd_title' => $dbkey,
             'page_id=rd_from',
             'page_title REGEXP \'^[a-zA-Z0-9_-]+$\'',
-        ), __METHOD__, array('ORDER BY' => 'LENGTH(rd_title) DESC', 'LIMIT' => 1));
+            'LENGTH(page_title) < '.strlen($dbkey),
+        ), __METHOD__, array('ORDER BY' => 'LENGTH(page_title) ASC', 'LIMIT' => 1));
         $row = $res->fetchObject();
-        if ($row)
+        if ($row && ($ns == NS_MAIN || $row->pagenamespace != NS_MAIN))
+            $shortcut = Title::newFromRow($row);
+    }
+    // Change namespace name to English one in the short link
+    if (!$shortcut && $ns != NS_MAIN && $wgContLang->getCode() != 'en')
+        $shortcut = $t;
+    if ($shortcut && $shortcut->userCanRead())
+    {
+        // Don't use $wgUser->getSkin()->link() as there is no way
+        // to force it output links with canonical namespace names
+        $dbkey = $shortcut->getDBkey();
+        $text = $shortcut->getText();
+        $ns = $shortcut->getNamespace();
+        if ($ns != NS_MAIN)
         {
-            $title = Title::newFromRow($row);
-            if ($title->userCanRead())
-                $wgOut->addHTML(wfMsgNoTrans('shortcut-link', $wgUser->getSkin()->link($title)));
+            $nstext = $wgCanonicalNamespaceNames[$ns];
+            if (!$dbkey)
+                $nstext = $wgContLang->getNsText($ns);
+            $dbkey = "$nstext:$dbkey";
+            $text = "$nstext:$text";
         }
+        $wgOut->addHTML(wfMsgNoTrans('shortcut-link',
+            '<a href="'.htmlspecialchars(str_replace('$1', $dbkey, $wgArticlePath)).
+            '">'.htmlspecialchars($text).'</a>'
+        ));
     }
     return true;
 }
