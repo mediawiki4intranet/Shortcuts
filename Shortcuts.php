@@ -60,7 +60,9 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
             $shortcut = Title::newFromRow($row);
     }
     // Change namespace name to English one in the short link
-    if ($is_short && !$shortcut && $ns != NS_MAIN && $wgContLang->getCode() != 'en')
+    if ($is_short && !$shortcut && $ns != NS_MAIN &&
+        !empty($wgCanonicalNamespaceNames[$ns]) &&
+        $wgContLang->getNsText($ns) != $wgCanonicalNamespaceNames[$ns])
         $shortcut = $t;
     if ($shortcut && $shortcut->userCanRead())
     {
