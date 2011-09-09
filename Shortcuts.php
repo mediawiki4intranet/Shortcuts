@@ -44,8 +44,8 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
     $ns = $t->getNamespace();
     $dbkey = $t->getDBkey();
     // Do not output "shortcut" links to articles which already have "short" title
-    if (preg_match('/[^a-zA-Z0-9_-]/s', $dbkey) ||
-        strlen($dbkey) > 32 || $ns != NS_MAIN)
+    $is_short = !preg_match('/[^a-zA-Z0-9_-]/s', $dbkey) && strlen($dbkey) <= 32;
+    if (!$is_short || $ns != NS_MAIN)
     {
         $res = $dbr->select(array('redirect', 'page'), '*', array(
             'rd_namespace' => $ns,
@@ -59,7 +59,7 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
             $shortcut = Title::newFromRow($row);
     }
     // Change namespace name to English one in the short link
-    if (!$shortcut && $ns != NS_MAIN && $wgContLang->getCode() != 'en')
+    if ($is_short && !$shortcut && $ns != NS_MAIN && $wgContLang->getCode() != 'en')
         $shortcut = $t;
     if ($shortcut && $shortcut->userCanRead())
     {
