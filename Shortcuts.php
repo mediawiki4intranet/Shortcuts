@@ -52,10 +52,11 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
             'rd_title' => $dbkey,
             'page_id=rd_from',
             'page_title REGEXP \'^[a-zA-Z0-9_-]+$\'',
-            'LENGTH(page_title) < '.strlen($dbkey),
+            'LENGTH(page_title) < '.mb_strlen($dbkey),
         ), __METHOD__, array('ORDER BY' => 'LENGTH(page_title) ASC', 'LIMIT' => 1));
         $row = $res->fetchObject();
-        if ($row && ($ns == NS_MAIN || $row->pagenamespace != NS_MAIN))
+        // Check if shortcut is really a shortcut
+        if ($row && (strlen($row->page_title) <= 32 || $row->page_namespace == NS_MAIN))
             $shortcut = Title::newFromRow($row);
     }
     // Change namespace name to English one in the short link
