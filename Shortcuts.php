@@ -44,16 +44,20 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
     $ns = $t->getNamespace();
     $dbkey = $t->getDBkey();
     // Do not output "shortcut" links to articles which already have "short" title
-    $is_short = !preg_match('/[^a-zA-Z0-9_-]/s', $dbkey) && strlen($dbkey) <= 32;
+    $is_ascii = !preg_match('/[^a-zA-Z0-9_-]/s', $dbkey);
+    $is_short = $is_ascii && strlen($dbkey) <= 32;
     if (!$is_short || $ns != NS_MAIN)
     {
-        $res = $dbr->select(array('redirect', 'page'), '*', array(
+        $where = array(
             'rd_namespace' => $ns,
             'rd_title' => $dbkey,
             'page_id=rd_from',
             'page_title REGEXP \'^[a-zA-Z0-9_-]+$\'',
-            'LENGTH(page_title) < '.mb_strlen($dbkey),
-        ), __METHOD__, array('ORDER BY' => 'LENGTH(page_title) ASC', 'LIMIT' => 1));
+        );
+        if ($is_ascii)
+            $where[] = 'LENGTH(page_title) < '.mb_strlen($dbkey);
+        $res = $dbr->select(array('redirect', 'page'), '*', $where,
+            __METHOD__, array('ORDER BY' => 'LENGTH(page_title) ASC', 'LIMIT' => 1));
         $row = $res->fetchObject();
         // Check if shortcut is really a shortcut
         if ($row && (strlen($row->page_title) <= 32 || $row->page_namespace == NS_MAIN))
