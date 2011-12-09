@@ -35,6 +35,27 @@ function wfShortcuts()
     $wgHooks['ArticleViewHeader'][] = 'efShortcutsArticleViewHeader';
 }
 
+// Clear floats for ArticleViewHeader {
+if (!function_exists('articleHeaderClearFloats'))
+{
+    global $wgHooks;
+    $wgHooks['ParserFirstCallInit'][] = 'checkHeaderClearFloats';
+    function checkHeaderClearFloats($parser)
+    {
+        global $wgHooks;
+        if (!in_array('articleHeaderClearFloats', $wgHooks['ArticleViewHeader']))
+            $wgHooks['ArticleViewHeader'][] = 'articleHeaderClearFloats';
+        return true;
+    }
+    function articleHeaderClearFloats($article, &$outputDone, &$useParserCache)
+    {
+        global $wgOut;
+        $wgOut->addHTML('<div style="clear:both"></div>');
+        return true;
+    }
+}
+// }
+
 function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
 {
     global $wgOut, $wgContLang, $wgArticlePath, $wgCanonicalNamespaceNames;
