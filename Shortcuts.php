@@ -50,7 +50,7 @@ if (!function_exists('articleHeaderClearFloats'))
     function articleHeaderClearFloats($article, &$outputDone, &$useParserCache)
     {
         global $wgOut;
-        $wgOut->addHTML('<div style="clear:both"></div>');
+        $wgOut->addHTML('<div style="clear:both;height:1px"></div>');
         return true;
     }
 }
