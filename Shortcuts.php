@@ -31,7 +31,6 @@ $wgExtensionCredits['other'][] = array (
 function wfShortcuts()
 {
     global $wgHooks;
-    wfLoadExtensionMessages('Shortcuts');
     $wgHooks['ArticleViewHeader'][] = 'efShortcutsArticleViewHeader';
 }
 
