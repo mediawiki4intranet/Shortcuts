@@ -24,8 +24,14 @@ $wgExtensionCredits['other'][] = array (
     'name'        => 'Display shortcut links to pages',
     'description' => 'On each page, a shortcut redirect link of minimal length will be displayed if it exists.',
     'author'      => 'Vitaliy Filippov',
-    'url'         => 'http://wiki.4intra.net/Shortcuts_(MediaWiki)',
-    'version'     => '2011-08-29',
+    'url'         => 'http://wiki.4intra.net/Shortcuts',
+    'version'     => '2014-03-25',
+);
+$wgResourceModules['ext.Shortcuts'] = array(
+    'localBasePath' => __DIR__,
+    'remoteExtPath' => 'Shortcuts',
+    'styles' => array('shortcuts.css'),
+    'position' => 'top',
 );
 
 function wfShortcuts()
@@ -103,9 +109,10 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
             $dbkey = "$nstext:$dbkey";
             $text = "$nstext:$text";
         }
-        $wgOut->addHTML(wfMsgNoTrans('shortcut-link',
+        $wgOut->addModules(array('ext.Shortcuts'));
+        $wgOut->addHTML('<div class="shortcut-link">'.wfMsgNoTrans('shortcut-link',
             '<a href="'.htmlspecialchars(str_replace('$1', $dbkey, $wgArticlePath)).
-            '">'.htmlspecialchars($text).'</a>'
+            '">'.htmlspecialchars($text).'</a></div>'
         ));
     }
     return true;

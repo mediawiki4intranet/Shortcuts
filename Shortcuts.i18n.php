@@ -13,13 +13,9 @@
 $messages = array();
 
 $messages['en'] = array(
-    'shortcut-link' => '<div style="float: right; background-color: #ccff99; margin: 0 0 0.5em 0.5em; '.
-        'padding: 5px 8px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; '.
-        'font-size: 85%; text-align: center;">Shortcut: $1</div>',
+    'shortcut-link' => 'Shortcut: $1',
 );
 
 $messages['ru'] = array(
-    'shortcut-link' => '<div style="float: right; background-color: #ccff99; margin: 0 0 0.5em 0.5em; '.
-        'padding: 5px 8px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; '.
-        'font-size: 85%; text-align: center;">Короткая ссылка: $1</div>',
+    'shortcut-link' => 'Короткая ссылка: $1',
 );
