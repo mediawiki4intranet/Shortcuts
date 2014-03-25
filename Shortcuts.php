@@ -30,7 +30,10 @@ $wgExtensionCredits['other'][] = array (
 $wgResourceModules['ext.Shortcuts'] = array(
     'localBasePath' => __DIR__,
     'remoteExtPath' => 'Shortcuts',
-    'styles' => array('shortcuts.css'),
+    'styles' => array(
+        'shortcuts.css' => array('media' => 'screen'),
+        'shortcuts.print.css' => array('media' => 'print'),
+    ),
     'position' => 'top',
 );
 

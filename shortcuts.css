@@ -9,7 +9,3 @@
 	font-size: 85%;
 	text-align: center;
 }
-
-@media print {
-	.shortcut-link { display: none; }
-}
