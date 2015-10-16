@@ -97,7 +97,7 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
         !empty($wgCanonicalNamespaceNames[$ns]) &&
         $wgContLang->getNsText($ns) != $wgCanonicalNamespaceNames[$ns])
         $shortcut = $t;
-    if ($shortcut && $shortcut->userCanRead())
+    if ($shortcut && $shortcut->userCan('read'))
     {
         // Don't use $wgUser->getSkin()->link() as there is no way
         // to force it output links with canonical namespace names
