@@ -81,7 +81,7 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
             'rd_namespace' => $ns,
             'rd_title' => $dbkey,
             'page_id=rd_from',
-            'page_title REGEXP \'^[a-zA-Z0-9_-]+$\'',
+            'page_title '.($dbr->getType() == 'mysql' ? 'REGEXP' : '~').' \'^[a-zA-Z0-9_-]+$\'',
         );
         if ($is_ascii)
             $where[] = 'LENGTH(page_title) < '.mb_strlen($dbkey);
