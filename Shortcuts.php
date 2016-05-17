@@ -112,7 +112,7 @@ function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
             $dbkey = "$nstext:$dbkey";
             $text = "$nstext:$text";
         }
-        $wgOut->addModules(array('ext.Shortcuts'));
+        $wgOut->addModuleStyles(array('ext.Shortcuts'));
         $wgOut->addHTML('<div class="shortcut-link">'.wfMsgNoTrans('shortcut-link',
             '<a href="'.htmlspecialchars(str_replace('$1', $dbkey, $wgArticlePath)).
             '">'.htmlspecialchars($text).'</a></div>'
