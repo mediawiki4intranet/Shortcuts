@@ -57,7 +57,9 @@ if (!function_exists('articleHeaderClearFloats'))
     }
     function articleHeaderClearFloats($article, &$outputDone, &$useParserCache)
     {
-        global $wgOut;
+        global $wgOut, $wgRequest;
+        if ($wgRequest->getVal('action') === 'render')
+            return true;
         $wgOut->addHTML('<div style="clear:both;height:1px"></div>');
         return true;
     }
@@ -66,7 +68,9 @@ if (!function_exists('articleHeaderClearFloats'))
 
 function efShortcutsArticleViewHeader($article, &$outputDone, &$useParserCache)
 {
-    global $wgOut, $wgContLang, $wgArticlePath, $wgCanonicalNamespaceNames;
+    global $wgOut, $wgContLang, $wgArticlePath, $wgRequest, $wgCanonicalNamespaceNames;
+    if ($wgRequest->getVal('action') === 'render')
+        return true;
     $dbr = wfGetDB(DB_SLAVE);
     $t = $article->getTitle();
     $shortcut = NULL;
