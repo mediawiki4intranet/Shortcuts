@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Vitaliy Filippov",
+            "AI Update"
+        ]
+    },
+    "shortcuts-desc": "Отображает короткие ссылки (алиасы) для страниц, если они существуют.",
+    "shortcut-link": "Короткая ссылка: $1"
+}

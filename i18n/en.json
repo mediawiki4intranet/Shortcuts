@@ -1,0 +1,10 @@
+{
+    "@metadata": {
+        "authors": [
+            "Vitaliy Filippov",
+            "AI Update"
+        ]
+    },
+    "shortcuts-desc": "On each page, a shortcut redirect link of minimal length will be displayed if it exists.",
+    "shortcut-link": "Shortcut: $1"
+}
