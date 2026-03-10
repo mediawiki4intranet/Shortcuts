@@ -15,7 +15,14 @@ class Hooks {
         }
 
         $services = MediaWikiServices::getInstance();
-        $dbr = $services->getDBLoadBalancer()->getReadConnectionRef();
+        $loadBalancer = $services->getDBLoadBalancer();
+        if ( method_exists( $loadBalancer, 'getReadConnectionRef' ) ) {
+            // MediaWiki 1.39+
+            $dbr = $loadBalancer->getReadConnectionRef();
+        } else {
+            // MediaWiki < 1.39
+            $dbr = $loadBalancer->getConnectionRef( DB_REPLICA );
+        }
         
         $title = $article->getTitle();
         $ns = $title->getNamespace();
