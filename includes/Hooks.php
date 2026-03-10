@@ -15,7 +15,7 @@ class Hooks {
         }
 
         $services = MediaWikiServices::getInstance();
-        $dbr = $services->getDBLoadBalancer()->getConnectionRef( DB_REPLICA );
+        $dbr = $services->getDBLoadBalancer()->getReadConnectionRef();
         
         $title = $article->getTitle();
         $ns = $title->getNamespace();
