@@ -16,7 +16,7 @@ class Hooks {
 
         $services = MediaWikiServices::getInstance();
         $loadBalancer = $services->getDBLoadBalancer();
-        if ( method_exists( $loadBalancer, 'getReadConnectionRef' ) ) {
+        if ( version_compare( MW_VERSION, '1.39', '>=' ) ) {
             // MediaWiki 1.39+
             $dbr = $loadBalancer->getReadConnectionRef();
         } else {
